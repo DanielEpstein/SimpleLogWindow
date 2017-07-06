@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,39 +19,27 @@ namespace SimpleLogWindow
     public partial class MainWindow : Window
     {
         int count = 0;
-        LogConsole console = new LogConsole();
 
         public MainWindow()
         {
             InitializeComponent();
-            StartLogConsole();
-        }
-
-        public void StartLogConsole()
-        {
-            MainWindow mainwindow = this;
-            console = new LogConsole(mainwindow);
-            // console.Left = this.Left + 0;
-            // console.Top = this.Top + 0;
-            console.Visibility = Visibility.Collapsed;
         }
 
         private void buttonLogConsole_Click(object sender, RoutedEventArgs e)
         {
-            if (console.Visibility != Visibility.Visible)
-            {
-                console.Visibility = Visibility.Visible;
-                console.Scroller.ScrollToEnd();
-                return;
-            }
-            console.Visibility = Visibility.Collapsed;
+            LogConsole.ToggleVisibility();
         }
 
         private void AddLogItem_Click(object sender, RoutedEventArgs e)
         {
             count++;
-            console.Log("Log Entry: " + count);
-            
+            LogConsole.Log("Log Item: " + count);
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            LogConsole.Close();
         }
     }
 }
