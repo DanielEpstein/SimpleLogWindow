@@ -23,6 +23,13 @@ namespace SimpleLogWindow
         public MainWindow()
         {
             InitializeComponent();
+            LogConsole.WriteLine("MainWindow ctor");
+
+            if (SettingsManger.OpenLogConsoleOnLaunch)
+            {
+                LogConsole.Visible();
+            }
+            OpenLogConsoleOnLaunchCheckBox.IsChecked = SettingsManger.OpenLogConsoleOnLaunch;
         }
 
         private void buttonLogConsole_Click(object sender, RoutedEventArgs e)
@@ -33,13 +40,28 @@ namespace SimpleLogWindow
         private void AddLogItem_Click(object sender, RoutedEventArgs e)
         {
             count++;
-            LogConsole.Log("Log Item: " + count);
+            LogConsole.WriteLine("Log Item: " + count);
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
             LogConsole.Close();
+        }
+
+        private void SaveSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsManger.Save();
+        }
+
+        private void OpenLogConsoleOnLaunchCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            SettingsManger.OpenLogConsoleOnLaunch = true;
+        }
+
+        private void OpenLogConsoleOnLaunchCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            SettingsManger.OpenLogConsoleOnLaunch = false;
         }
     }
 }

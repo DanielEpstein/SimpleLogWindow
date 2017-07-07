@@ -17,11 +17,16 @@ namespace SimpleLogWindow
 {
     public static class LogConsole
     {
-        public static LogConsoleWindow myLogConsole = new LogConsoleWindow();
+        private static LogConsoleWindow myLogConsole = new LogConsoleWindow();
 
         public static void ToggleVisibility()
         {
             myLogConsole.ToggleVisibility();
+        }
+
+        public static void Visible()
+        {
+            myLogConsole.Visibility = Visibility.Visible;
         }
 
         public static void Close()
@@ -30,9 +35,14 @@ namespace SimpleLogWindow
             myLogConsole.Close();
         }
 
-        public static void Log(string str)
+        public static void WriteLine(string str)
         {
-            myLogConsole.Log(str);
+            myLogConsole.WriteLine(str);
+        }
+
+        public static void Write(string str)
+        {
+            myLogConsole.Write(str);
         }
     }
 
@@ -43,6 +53,9 @@ namespace SimpleLogWindow
         public LogConsoleWindow()
         {
             InitializeComponent();
+            WriteLine("LogConsoleWindow ctor");
+
+            
         }
 
         public void ToggleVisibility()
@@ -58,9 +71,14 @@ namespace SimpleLogWindow
 
 
 
-        public void Log(string text)
+        public void WriteLine(string text)
         {
             this.OutputBox.AppendText(text + "\n");
+        }
+
+        public void Write(string text)
+        {
+            this.OutputBox.AppendText(text);
         }
 
         private void scrollviewer_Messages_ScrollChanged(object sender, ScrollChangedEventArgs e)

@@ -13,5 +13,13 @@ namespace SimpleLogWindow
     /// </summary>
     public partial class App : Application
     {
+        App()
+        {
+            LogConsole.WriteLine("App ctor");
+            SettingsManger.Load();
+
+
+            LogConsole.WriteLine("OpenLogConsoleOnLaunch: " + SettingsManger.OpenLogConsoleOnLaunch);
+        }
     }
 }
