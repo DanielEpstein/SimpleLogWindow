@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SimpleLogWindow
 {
@@ -62,6 +51,30 @@ namespace SimpleLogWindow
         private void OpenLogConsoleOnLaunchCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             SettingsManger.OpenLogConsoleOnLaunch = false;
+        }
+
+        private void TaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            TaskManager.RunTask();
+        }
+    }
+
+    public static class TaskManager
+    {
+        static int taskcount = 0;
+
+        public static void RunTask()
+        {
+            taskcount++;
+            Task.Run(() => DoSomething(taskcount));
+
+        }
+
+        static void DoSomething(int tc)
+        {
+            LogConsole.WriteLine("start of task " + tc);
+            Thread.Sleep(5000);
+            LogConsole.WriteLine("end of task " + tc);
         }
     }
 }

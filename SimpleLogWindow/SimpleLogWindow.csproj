@@ -55,6 +55,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="SettingsManager.cs" />
+    <Compile Include="TextBoxOutputter.cs" />
     <Page Include="LogConsoleWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

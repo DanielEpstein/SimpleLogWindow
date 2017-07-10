@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SimpleLogWindow
 {
@@ -37,27 +26,29 @@ namespace SimpleLogWindow
 
         public static void WriteLine(string str)
         {
-            myLogConsole.WriteLine(str);
+            myLogConsole.outputter.WriteLine(str);
         }
 
         public static void Write(string str)
         {
-            myLogConsole.Write(str);
+            myLogConsole.outputter.Write(str);
         }
     }
 
     public partial class LogConsoleWindow : Window
     {
+        public TextBoxOutputter outputter;
         public bool CloseForReal = false;
 
+        // ctor
         public LogConsoleWindow()
         {
             InitializeComponent();
-            WriteLine("LogConsoleWindow ctor");
-
-            
+            outputter = new TextBoxOutputter(OutputBox);
+            outputter.WriteLine("LogConsoleWindow ctor");
         }
 
+        // Toggle LogConsoleWindow Visibility
         public void ToggleVisibility()
         {
             if (this.Visibility != Visibility.Visible)
@@ -69,18 +60,7 @@ namespace SimpleLogWindow
             this.Visibility = Visibility.Collapsed;
         }
 
-
-
-        public void WriteLine(string text)
-        {
-            this.OutputBox.AppendText(text + "\n");
-        }
-
-        public void Write(string text)
-        {
-            this.OutputBox.AppendText(text);
-        }
-
+        // ScrollViewer Auto Scroller
         private void scrollviewer_Messages_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             ScrollViewer sv = sender as ScrollViewer;
@@ -103,6 +83,7 @@ namespace SimpleLogWindow
             sv.Tag = AutoScrollToEnd;
         }
 
+        // Only close LogConsoleWindow from main window, otherwise collapse
         protected override void OnClosing(CancelEventArgs e)
         {
             this.Visibility = Visibility.Collapsed;

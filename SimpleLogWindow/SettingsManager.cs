@@ -1,34 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.Reflection;
 
 namespace SimpleLogWindow
 {
-    public class XMLData
-    {
-        public bool OpenLogConsoleOnLaunch { get; set; }
-
-        public void Save(string filename)
-        {
-            using (StreamWriter sw = new StreamWriter(filename))
-            {
-                XmlSerializer xmls = new XmlSerializer(typeof(XMLData));
-                xmls.Serialize(sw, this);
-            }
-        }
-        public XMLData Read(string filename)
-        {
-            using (StreamReader sw = new StreamReader(filename))
-            {
-                XmlSerializer xmls = new XmlSerializer(typeof(XMLData));
-                return xmls.Deserialize(sw) as XMLData;
-            }
-        }
-    }
-
-
     public static class SettingsManger
     {
         private static XMLDataManager xmldm;
@@ -39,16 +15,25 @@ namespace SimpleLogWindow
             set { xmldm.Settings.OpenLogConsoleOnLaunch = value; }
         }
 
+        public static string ReturnSettingAsStrings()
+        {
+            string output =
+                "----------<Loaded Settings>----------\n" +
+                "OpenLogConsoleOnLaunch: " + OpenLogConsoleOnLaunch + "\n" +
+                "-------------------------------------\n";
+            return output;
+        }
+
         public static void Load()
         {
             xmldm = new XMLDataManager();
+            LogConsole.Write(ReturnSettingAsStrings());
         }
 
         public static void Save()
         {
             xmldm.SaveSettings();
         }
-
     }
 
     public class XMLDataManager
@@ -90,6 +75,28 @@ namespace SimpleLogWindow
         {
             LogConsole.WriteLine("Saving settings.xml");
             Settings.Save(SettingsPath);
+        }
+    }
+
+    public class XMLData
+    {
+        public bool OpenLogConsoleOnLaunch { get; set; }
+
+        public void Save(string filename)
+        {
+            using (StreamWriter sw = new StreamWriter(filename))
+            {
+                XmlSerializer xmls = new XmlSerializer(typeof(XMLData));
+                xmls.Serialize(sw, this);
+            }
+        }
+        public XMLData Read(string filename)
+        {
+            using (StreamReader sw = new StreamReader(filename))
+            {
+                XmlSerializer xmls = new XmlSerializer(typeof(XMLData));
+                return xmls.Deserialize(sw) as XMLData;
+            }
         }
     }
 }
